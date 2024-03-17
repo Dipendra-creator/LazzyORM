@@ -13,12 +13,12 @@ INSTALL_REQUIRES = [
 
 setup(
     name=PACKAGE_NAME,
-    version="0.1.7",
+    version="0.1.8",
     description=DESCRIPTION,
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
-    packages=find_packages(exclude=["tests*"]),
     install_requires=INSTALL_REQUIRES,
+    long_description_content_type="text/markdown",
     entry_points={
         "console_scripts": [
             "lazyorm_cli=lazyorm.cli:main",
