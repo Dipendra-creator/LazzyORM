@@ -53,11 +53,11 @@ For more details on how to use LazyORM, check out the [documentation](https://gi
 
 ## Contributing
 
-If you'd like to contribute to LazyORM, please read our [contributing guidelines](
+If you'd like to contribute to LazyORM, please read our [contributing guidelines]
 
 ## License
 
-LazyORM is distributed under the [MIT License](
+LazyORM is distributed under the [MIT License]
 ```python
 # Path: setup.py
 from setuptools import setup, find_packages
