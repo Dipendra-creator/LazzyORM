@@ -1,6 +1,6 @@
 # LazyORM: A Powerful Lazy Loading ORM for MySQL
 
-[![PyPI - version](https://badge.fury.io/py/lazyorm.svg)](https://pypi.org/project/lazyorm/)  # Update the link once you publish to PyPI
+[![PyPI - version](https://badge.fury.io/py/lazyorm.svg)](https://pypi.org/project/LazzyORM/)
 
 LazyORM is a Python library designed to simplify database interactions with MySQL. It provides a clean and efficient way to work with your data by leveraging lazy loading techniques.
 
@@ -24,22 +24,27 @@ pip install lazyorm
 Here's a simple example to get you started with LazyORM:
 
 ```python
-from lazyorm import LazyFetch
+from lazzy_orm.config import Connector
+from lazzy_orm.lazzy_fetch.lazzy_fetch import LazyFetch
+from lazzy_orm.logger.logger import Logger
+from dataclasses import dataclass
 
-class User(object):
-  def __init__(self, id, name, email):
-    self.id = id
-    self.name = name
-    self.email = email
+# Connect to the database
+connector = Connector(host='localhost', user='root', password='root', database='test', port=3306)
+logger = Logger(log_file="main.log", logger_name="main_logger").logger
 
-def get_users():
-  query = "SELECT * FROM users"
-  return LazyFetch(User, query).get()
+@dataclass
+class Table:
+    table_name: str
 
-users = get_users()
-
-for user in users:
-  print(f"User: {user.name} (Email: {user.email})")
+if __name__ == '__main__':
+    # Create a table
+    connection_pool = connector.get_connection_pool()
+    with connection_pool.get_connection() as connection:
+        with connection.cursor() as cursor:
+            # print all the tables in the database
+            tables = LazyFetch(model=Table, query="show tables", _connection_pool=connection_pool).get()
+            logger.info(f"Tables in the database: {tables}")
 ```
 
 ## Documentation
