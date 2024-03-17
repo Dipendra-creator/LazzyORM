@@ -50,31 +50,71 @@ if __name__ == '__main__':
 Here's a simple example of LazyInsert to with LazyORM:
 ```python
 from lazzy_orm.config import Connector
+from lazzy_orm.lazzy_fetch.lazzy_fetch import LazyFetch
 from lazzy_orm.lazzy_insert.lazzy_insert import LazyInsert
+from lazzy_orm.logger.logger import Logger
+from dataclasses import dataclass
 import os
 
-connector = Connector(
-    host="localhost",
-    user="root",
-    database="testdb",
-    port=3306,
-    password="root"
-)
 
+# Connect to the database
+connector = Connector(host='localhost', user='root', password='root', database='testdb', port=3306)
+logger = Logger(log_file="main.log", logger_name="main_logger").logger
+
+@dataclass
+class Table:
+    table_name: str
 
 if __name__ == '__main__':
+    # Create a table
     connection_pool = connector.get_connection_pool()
-    current_dir = os.path.dirname(__file__)
-    test_csv = os.path.join(current_dir, "test.csv")
+    with connection_pool.get_connection() as connection:
+        with connection.cursor() as cursor:
+            # print all the tables in the database
+            tables = LazyFetch(model=Table, query="show tables", _connection_pool=connection_pool).get()
+            logger.info(f"Tables in the database: {tables}")
+            
+            current_dir = os.path.dirname(__file__)
+        cursor.close()
+    
+    # dumping csv into the database 
+    test_csv = os.path.join(current_dir, "test_table.csv")
     lazy_insert = LazyInsert(
         table_name="test_table",
         path_to_csv=test_csv,
         _connection_pool=connection_pool,
         drop_if_exists=True,
         auto_increment=True,
-        chunk_size=10000
+        chunk_size=10000,
+        log_create_table_query=True,
+        log_insert_query=True
     )
     lazy_insert.perform_staging_insert()
+    
+    @dataclass
+    class Tutorial:
+        id: int
+        title: str
+        description: str
+        published: int
+
+    data = [
+        Tutorial(1, 'Python', 'Python programming language', 1),
+        Tutorial(2, 'Java', 'Java programming language', 1),
+        Tutorial(3, 'C++', 'C++ programming language', 0)
+    ]    
+    
+    lazy_insert_data = LazyInsert(
+        table_name="tutorial",
+        data=data,
+        _connection_pool=connection_pool,
+        query="insert into tutorial (id, title, description, published) values (%s, %s, %s, %s)",
+    )
+    
+    lazy_insert_data.insert()
+    
+    logger.info("Data inserted successfully")    
+
 ```
 
 ## Documentation
