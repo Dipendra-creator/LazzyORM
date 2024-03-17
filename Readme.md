@@ -1,6 +1,6 @@
 # LazyORM: A Powerful Lazy Loading ORM for MySQL
 
-[![PyPI - version](https://badge.fury.io/py/LazzyORM.svg)](https://pypi.org/project/LazzyORM/)
+[![PyPI - version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=py&r=r&ts=1683906897&type=6e&v=0.2.2&x2=0)](https://pypi.org/project/LazzyORM/)
 
 
 LazyORM is a Python library designed to simplify database interactions with MySQL. It provides a clean and efficient way to work with your data by leveraging lazy loading techniques.
