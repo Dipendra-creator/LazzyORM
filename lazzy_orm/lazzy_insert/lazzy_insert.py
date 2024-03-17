@@ -1,5 +1,5 @@
 import logging
-from typing import TypeVar, Generic
+from typing import TypeVar, Generic, List
 
 import pandas as pd
 from mysql.connector import pooling
@@ -41,17 +41,20 @@ class LazyInsert(Generic[T]):
         - log_insert_query (bool): Flag indicating whether to log insert query execution (default: False).
         - chunk_size (int): Size of data chunks to be inserted at once (default: 1000).
     """
+
     def __init__(
             self,
             table_name: str,
-            path_to_csv: str,
             _connection_pool: pooling.MySQLConnectionPool or None,
+            path_to_csv: str = None,
             auto_increment: bool = False,
             drop_if_exists: bool = False,
             create_if_not_exists: bool = True,
             log_create_table_query: bool = False,
             log_insert_query: bool = False,
-            chunk_size: int = 1000
+            chunk_size: int = 1000,
+            data: List[T] = None,
+            query: str = None
     ):
         self.table_name = table_name
         self.path_to_csv = path_to_csv
@@ -63,6 +66,72 @@ class LazyInsert(Generic[T]):
         self.log_create_table_query = log_create_table_query
         self.log_insert_query = log_insert_query
         self.chunk_size = chunk_size
+        self.data = data
+        self.query = query
+
+    def extract_row(self, data: List[T]) -> tuple:
+        """
+        Extracts a row model from the data.
+
+        where T is the type of the data to be extracted.
+
+        @dataclass
+        class Model:
+            name: str
+            age: int
+
+        Parameters:
+        - data: The data to be extracted.
+
+        Returns:
+        - The row model extracted from the data in the form of a tuple.
+        """
+        try:
+            return tuple(tuple(getattr(row, field.name) for field in row.__dataclass_fields__.values()) for row in data)
+        except Exception as e:
+            lazy_insert_logger.error(f"Error while extracting row: {e}")
+            raise e
+
+    def insert(
+            self
+    ) -> int:
+        """
+        Inserts data into the table in the database.
+
+        where T is the type of the data to be inserted.
+
+        @dataclass
+        class Model:
+            name: str
+            age: int
+
+        Parameters:
+        - model: The structure of the data to be inserted.
+        - data: The data to be inserted into the table.
+        - query: The SQL query to be executed.
+        - _connection_pool: The connection pool to the MySQL database.
+
+        Returns:
+        - The number of rows inserted into the table.
+        """
+        try:
+            cursor = self._connection.cursor()
+            data_inserted = 0
+            for i in range(0, len(self.data), self.chunk_size):
+                chunk = self.data[i:i + self.chunk_size]
+                values = self.extract_row(chunk)
+
+                if self.log_insert_query:
+                    lazy_insert_logger.info(f"Executing query: {self.query} with values: {len(values)}")
+                data_inserted += len(values)
+                cursor.executemany(self.query, values)
+                self._connection.commit()
+            lazy_insert_logger.info(f"Data inserted successfully into table {self.table_name}.")
+            cursor.close()
+            return data_inserted
+        except Exception as e:
+            lazy_insert_logger.error(f"Error while inserting data: {e}")
+            raise e
 
     def create_table(self, cursor, columns):
         """

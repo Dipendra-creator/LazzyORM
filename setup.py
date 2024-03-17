@@ -14,7 +14,7 @@ INSTALL_REQUIRES = [
 
 setup(
     name=PACKAGE_NAME,
-    version="0.2.0",
+    version="0.2.2",
     description=DESCRIPTION,
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
