@@ -17,7 +17,7 @@ LazyORM is a Python library designed to simplify database interactions with MySQ
 You can install LazyORM using pip:
 
 ```bash
-pip install LazzyORM
+pip install LazzyORM==0.2.2
 ```
 
 ## Quick Start
