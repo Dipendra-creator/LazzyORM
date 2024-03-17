@@ -30,7 +30,7 @@ from lazzy_orm.logger.logger import Logger
 from dataclasses import dataclass
 
 # Connect to the database
-connector = Connector(host='localhost', user='root', password='root', database='test', port=3306)
+connector = Connector(host='localhost', user='root', password='root', database='testdb', port=3306)
 logger = Logger(log_file="main.log", logger_name="main_logger").logger
 
 @dataclass
@@ -47,17 +47,47 @@ if __name__ == '__main__':
             logger.info(f"Tables in the database: {tables}")
 ```
 
+Here's a simple example of LazyInsert to with LazyORM:
+```python
+from lazzy_orm.config import Connector
+from lazzy_orm.lazzy_insert.lazzy_insert import LazyInsert
+import os
+
+connector = Connector(
+    host="localhost",
+    user="root",
+    database="testdb",
+    port=3306,
+    password="root"
+)
+
+
+if __name__ == '__main__':
+    connection_pool = connector.get_connection_pool()
+    current_dir = os.path.dirname(__file__)
+    test_csv = os.path.join(current_dir, "test.csv")
+    lazy_insert = LazyInsert(
+        table_name="test_table",
+        path_to_csv=test_csv,
+        _connection_pool=connection_pool,
+        drop_if_exists=True,
+        auto_increment=True,
+        chunk_size=10000
+    )
+    lazy_insert.perform_staging_insert()
+```
+
 ## Documentation
 
 For more details on how to use LazyORM, check out the [documentation](https://github.com/Dipendra-creator).
 
 ## Contributing
 
-If you'd like to contribute to LazyORM, please read our [contributing guidelines](
+If you'd like to contribute to LazyORM, please read our [contributing guidelines]
 
 ## License
 
-LazyORM is distributed under the [MIT License](
+LazyORM is distributed under the [MIT License]
 ```python
 # Path: setup.py
 from setuptools import setup, find_packages
