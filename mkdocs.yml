@@ -1,0 +1,19 @@
+# mkdocs.yml
+site_name: Lazzy ORM Documentation
+
+theme:
+  name: "material"
+  palette:
+    primary: "indigo"
+    accent: "indigo"
+
+plugins:
+  - search
+  - mkdocstrings:
+      watch:
+        - src/lazzy_orm
+
+extra:
+  social:
+    - icon: "fontawesome/brands/github"
+      link: "https://github.com/lazzy-orm/lazzy"
