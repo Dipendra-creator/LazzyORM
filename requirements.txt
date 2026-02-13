@@ -1,5 +1,29 @@
-mysql-connector-python
-requests
-click
-setuptools
-pandas
+# Core dependencies
+mysql-connector-python>=8.0.0
+requests>=2.25.0
+click>=7.0
+pandas>=1.0.0
+
+# Development dependencies (install with: pip install -r requirements.txt)
+# For testing
+pytest>=7.0.0
+pytest-cov>=3.0.0
+
+# For code formatting
+black>=22.0.0
+isort>=5.10.0
+
+# For linting
+flake8>=4.0.0
+
+# For type checking
+mypy>=0.950
+
+# For building and publishing
+setuptools>=45
+wheel>=0.37.0
+twine>=4.0.0
+
+# For documentation
+mkdocs>=1.4.0
+mkdocs-material>=8.5.0

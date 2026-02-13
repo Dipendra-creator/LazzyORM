@@ -1,0 +1,109 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "LazzyORM"
+version = "0.3.0"
+description = "A Powerful Lazy Loading ORM for MySQL"
+readme = "Readme.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Dipendra Bhardwaj", email = "dipu.sharma.1122@gmail.com"}
+]
+keywords = ["mysql", "orm", "database", "lazy-loading", "connection-pooling"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "mysql-connector-python>=8.0.0",
+    "click>=7.0",
+    "requests>=2.25.0",
+    "pandas>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+    "isort>=5.10.0",
+]
+docs = [
+    "mkdocs>=1.4.0",
+    "mkdocs-material>=8.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Dipendra-creator/LazzyORM"
+Documentation = "https://github.com/Dipendra-creator/LazzyORM#readme"
+Repository = "https://github.com/Dipendra-creator/LazzyORM"
+"Bug Tracker" = "https://github.com/Dipendra-creator/LazzyORM/issues"
+Changelog = "https://github.com/Dipendra-creator/LazzyORM/blob/main/CHANGELOG.md"
+"API Reference" = "https://github.com/Dipendra-creator/LazzyORM/blob/main/API_REFERENCE.md"
+"PyPI" = "https://pypi.org/project/LazzyORM/"
+Download = "https://github.com/Dipendra-creator/LazzyORM/archive/v0.3.0.tar.gz"
+
+[tool.setuptools.packages.find]
+include = ["lazzy_orm*"]
+exclude = ["tests*", "docs*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=lazzy_orm --cov-report=html --cov-report=term-missing"
+
+[tool.black]
+line-length = 120
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  \.eggs
+  | \.git
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+follow_imports = "normal"
+ignore_missing_imports = true

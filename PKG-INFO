@@ -1,0 +1,105 @@
+"""
+PKG-INFO for LazzyORM
+
+This file contains package metadata that will be displayed on PyPI.
+It is automatically generated from setup.py and README.md during build.
+"""
+
+Metadata-Version: 2.1
+Name: LazzyORM
+Version: 0.3.0
+Summary: A Powerful Lazy Loading ORM for MySQL with SQL Injection Protection
+Home-page: https://github.com/Dipendra-creator/LazzyORM
+Download-URL: https://github.com/Dipendra-creator/LazzyORM/archive/v0.3.0.tar.gz
+Author: Dipendra Bhardwaj
+Author-email: dipu.sharma.1122@gmail.com
+License: MIT
+Project-URL: Documentation, https://github.com/Dipendra-creator/LazzyORM#readme
+Project-URL: Bug Reports, https://github.com/Dipendra-creator/LazzyORM/issues
+Project-URL: Source, https://github.com/Dipendra-creator/LazzyORM
+Project-URL: Changelog, https://github.com/Dipendra-creator/LazzyORM/blob/main/CHANGELOG.md
+Project-URL: API Reference, https://github.com/Dipendra-creator/LazzyORM/blob/main/API_REFERENCE.md
+Keywords: mysql,orm,database,lazy-loading,connection-pooling,sql,mysql-connector,query-builder,sql-injection-protection,database-abstraction,crud,csv-import
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Database
+Classifier: Topic :: Database :: Front-Ends
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Framework :: Django
+Classifier: Framework :: Flask
+Classifier: Intended Audience :: Information Technology
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+Provides-Extra: docs
+Provides-Extra: all
+
+# LazzyORM - A Powerful Lazy Loading ORM for MySQL
+
+## Features
+
+- 🔒 SQL Injection Protection with Parameterized Queries
+- ⚡ Connection Pooling for Performance
+- 🔄 Complete CRUD Operations (Create, Read, Update, Delete)
+- 🎯 Intuitive Query Builder with Method Chaining
+- 📦 Bulk CSV Import with Auto Table Creation
+- 🛡️ Comprehensive Input Validation
+- 🎨 Type Hints Throughout
+- 📊 Built-in Logging System
+- 🔧 Context Manager Support
+- 🧪 Fully Tested with pytest
+
+## Quick Example
+
+```python
+from lazzy_orm import Connector, LazyQuery
+
+# Setup connection
+connector = Connector(
+    host='localhost', user='root', 
+    password='pass', database='mydb', port=3306
+)
+pool = connector.get_connection_pool()
+
+# Query with safety
+users = (
+    LazyQuery(model=User, connection_pool=pool)
+    .select_all()
+    .where("age", 25, ">")
+    .order_by("name", "ASC")
+    .limit(10)
+    .to_list()
+)
+```
+
+## Installation
+
+```bash
+pip install LazzyORM
+```
+
+## Documentation
+
+- **Full Documentation**: https://github.com/Dipendra-creator/LazzyORM#readme
+- **API Reference**: https://github.com/Dipendra-creator/LazzyORM/blob/main/API_REFERENCE.md
+- **Examples**: https://github.com/Dipendra-creator/LazzyORM/tree/main/examples
+
+## Support
+
+- GitHub Issues: https://github.com/Dipendra-creator/LazzyORM/issues
+- PyPI: https://pypi.org/project/LazzyORM/

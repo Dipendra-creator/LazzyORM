@@ -1,0 +1,22 @@
+# MANIFEST.in
+# Include documentation files in the package distribution
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include requirements.txt
+include pyproject.toml
+
+# Include all example files
+recursive-include examples *.py *.csv
+
+# Exclude development and test files
+recursive-exclude tests *
+recursive-exclude docs *
+recursive-exclude .github *
+
+# Exclude Python cache and build artifacts
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude .DS_Store
+global-exclude *.so
